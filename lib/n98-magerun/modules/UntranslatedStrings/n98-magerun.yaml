@@ -1,0 +1,6 @@
+autoloaders:
+  UntranslatedStrings: %module%/src
+
+commands:
+  customCommands:
+    - UntranslatedStrings\Magento\Command\Dev\UntranslatedStrings\ToggleCommand
