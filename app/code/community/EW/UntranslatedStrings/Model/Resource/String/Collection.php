@@ -89,6 +89,8 @@ class EW_UntranslatedStrings_Model_Resource_String_Collection extends Mage_Core_
     /**
      * Configures collection to be summary of
      * untranslated strings by locale.
+     *
+     * @param integer $topStringsCount
      */
     public function configureSummary($topStringsCount = 10) {
         $this->_interferWithCountSql = true;

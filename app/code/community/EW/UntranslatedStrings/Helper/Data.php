@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class EW_UntranslatedStrings_Helper_Data
+ */
 class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const PROFILER_KEY = 'EW_UNTRANSLATED_STRINGS::ALL';
@@ -9,6 +12,8 @@ class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
     const CONFIG_PATH_BATCH_LOCALES = 'dev/translate/untranslated_strings_locales';
     const CONFIG_PATH_MATCHING_KEY_VALUE_PAIR_ENABLED = 'dev/translate/untranslated_strings_enable_matching_key_value_pair';
     const CONFIG_PATH_EXCLUDE_CODES = 'dev/translate/untranslated_strings_exclude';
+    const CONFIG_PATH_EXPORT_AUTO_CREATE_FILES = 'dev/translate/untranslated_strings_create_files';
+    const CONFIG_PATH_EXPORT_MERGE_FILES = 'dev/translate/untranslated_strings_merge_files';
 
     /** @var array */
     private $_translators = null;
@@ -29,6 +34,25 @@ class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $enabled;
+    }
+
+
+    /**
+     * Is automatic file creation enabled
+     *
+     * @return bool
+     */
+    public function isAutoCreateEnabled() {
+        return (bool)Mage::getStoreConfig(self::CONFIG_PATH_EXPORT_AUTO_CREATE_FILES);
+    }
+
+    /**
+     * Is merging automatically created files enabled
+     *
+     * @return bool
+     */
+    public function isMergingEnabled() {
+        return (bool)Mage::getStoreConfig(self::CONFIG_PATH_EXPORT_MERGE_FILES);
     }
 
     /**
@@ -62,6 +86,7 @@ class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
      * @param bool $allowMatchingKeyValuePairs - matching key / value pairs count as translations
      * @param null $storeIdContext
      * @param bool $forceRefresh
+     *
      * @return EW_UntranslatedStrings_Model_Core_Translate
      */
     public function getTranslator($locale, $allowMatchingKeyValuePairs = null, $storeIdContext = null, $forceRefresh = false) {
@@ -98,6 +123,7 @@ class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $text
      * @param $code
      * @param $locale
+     *
      * @return bool
      */
     public function isTranslated($text, $code, $locale) {
@@ -112,16 +138,17 @@ class EW_UntranslatedStrings_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function getCheckBatchLocales() {
+    public function hasToCheckBatchLocales() {
         return (bool)Mage::getStoreConfig(self::CONFIG_PATH_BATCH_LOCALES_ENABLED);
     }
 
     /**
      * Return array of locale codes to check
+     *
      * @return array
      */
     public function getCheckLocales() {
-        if($this->getCheckBatchLocales()) {
+        if($this->hasToCheckBatchLocales()) {
             return explode(',', Mage::getStoreConfig(self::CONFIG_PATH_BATCH_LOCALES));
         }
 

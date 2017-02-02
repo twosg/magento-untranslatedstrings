@@ -8,8 +8,7 @@ $tableName = $installer->getTable('ew_untranslatedstrings/string');
 
 if(!$installer->getConnection()->isTableExists($tableName)){
 
-    $table = new Varien_Db_Ddl_Table();
-    $table->setName($tableName);
+    $table = $installer->getConnection()->newTable($tableName);
 
     $table->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array('nullable' => false, 'identity' => true, 'primary' => true));
     $table->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array('nullable' => false));

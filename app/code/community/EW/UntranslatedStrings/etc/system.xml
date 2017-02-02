@@ -115,6 +115,45 @@
                                 <untranslated_strings_batch_locales_enabled>1</untranslated_strings_batch_locales_enabled>
                             </depends>
                         </untranslated_strings_locales>
+                        <untranslated_strings_create_files translate="label comment">
+                            <label>Automatically create CSV files to be filled in var/export/translations/ directory.</label>
+                            <comment>You can export all strings logged in database with button below.</comment>
+                            <config_path>dev/translate/untranslated_strings_create_files</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <untranslated_strings_enabled>1</untranslated_strings_enabled>
+                            </depends>
+                        </untranslated_strings_create_files>
+                        <untranslated_strings_merge_files>
+                            <label>Merge CSV files</label>
+                            <comment>If set to **No** then a separate file will be created for each module.</comment>
+                            <config_path>dev/translate/untranslated_strings_merge_files</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <untranslated_strings_enabled>1</untranslated_strings_enabled>
+                                <untranslated_strings_create_files>1</untranslated_strings_create_files>
+                            </depends>
+                        </untranslated_strings_merge_files>
+                        <untranslated_strings_export_files>
+                            <label>Export untranslated strings to CSV files</label>
+                            <comment>Export all logged untranslated strings to files as configured above.</comment>
+                            <type>button</type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_model>ew_untranslatedstrings/adminhtml_system_config_form_button</frontend_model>
+                        </untranslated_strings_export_files>
                     </fields>
                 </ew_untranslatedstrings>
             </groups>

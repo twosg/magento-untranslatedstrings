@@ -25,7 +25,7 @@ After enabling the functionality in the system config as stated above, any time 
 To see a summary of untranslated strings, visit *Reports -> Untranslated Strings -> Untranslated Strings Summary* in Magento admin. This report shows a summary of untranslated strings by locale.
 Additionally, you can perform the following actions:
 
-- Purge: this removes strings from the untranslated strings report which have since had translations added. This allows you to 
+- Purge: this removes strings from the untranslated strings report which have since had translations added. This allows you to
   clean up the report after adding new translations to address previous gaps.
 - Truncate: this removes all strings from the report for the given locale(s).
 
@@ -36,3 +36,16 @@ To see a full report of this log, visit *Reports -> Untranslated Strings -> Untr
 Currently, the module introduces a small to moderate performance penalty, depending on the number of locales you have configured to check. However, this penalty is realized **only if enabled in system configuration**. That means that it should be safe to have installed on both production and stage, but you probably don't want to enable it on production all the time.
 
 Note that it's disabled by default.
+
+
+## Update notes
+
+- 1.0.2
+    - added option to export strings to CSV files in `var/export/ew_untranslatedstrings` (check config/dev/translate for more information)
+
+    - on install it checks if tables are already existing in db - if yes it's ommiting the creation to avoid critical error.
+
+    - phpdocs
+
+    - few small improvements
+

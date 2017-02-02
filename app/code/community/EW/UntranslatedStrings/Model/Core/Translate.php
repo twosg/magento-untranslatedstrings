@@ -10,7 +10,7 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
     protected $_allowMatchingKeyValuePairs = false;
     protected $_allowLooseDevModuleMode = false;
     protected $_themeStore = null;
-
+    protected $_model = null;
     /**
      * Allow matching key / value translation pairs
      * when loading translations?
@@ -74,11 +74,17 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
         $this->_themeStore = $storeId;
     }
 
+
+    /**
+     * @param string $text
+     * @param string $code
+     *
+     * @return bool
+     */
     public function hasTranslation($text, $code) {
         if (array_key_exists($code, $this->getData()) || array_key_exists($text, $this->getData())) {
             return true;
         }
-
         return false;
     }
 
@@ -95,6 +101,8 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
 
         //loop locale(s) and find gaps
         $untranslatedPhrases = array();
+        $this->_model = Mage::getModel('ew_untranslatedstrings/string');
+        $createFiles = (bool)Mage::getStoreConfig('dev/translate/untranslated_create_files');
         foreach($this->_getLocalesToCheck() as $locale) {
             if(!Mage::helper('ew_untranslatedstrings')->isTranslated($text,$code,$locale)) {
                 $untranslatedPhrases[] = array(
@@ -102,6 +110,17 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
                     'code' => $code,
                     'locale' => $locale
                 );
+                if($createFiles) {
+                    $string = $this->_model->load($code, 'translation_code');
+                    if(!$string) {
+                        $module = explode('::', $code)[0];
+                        Mage::dispatchEvent('ew_untranslatedstrings_string_found', array(
+                            'string' => $text,
+                            'module' => $module,
+                            'locale' => $locale
+                        ));
+                    }
+                }
             }
         }
         $this->_storeUntranslated($untranslatedPhrases);
@@ -132,6 +151,8 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
      *
      * @param array $data
      * @param string $scope
+     * @param bool $forceReload
+     *
      * @return Mage_Core_Model_Translate
      */
     protected function _addData($data, $scope, $forceReload=false)
@@ -148,7 +169,7 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
             $value  = $this->_prepareDataString($value);
             if ($scope && isset($this->_dataScope[$key]) && !$forceReload ) {
                 /**
-                 * Checking previos value
+                 * Checking previous value
                  */
                 $scopeKey = $this->_dataScope[$key] . self::SCOPE_SEPARATOR . $key;
                 if (!isset($this->_data[$scopeKey])) {
@@ -217,7 +238,6 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
      */
     protected function _storeUntranslated(array $phrases) {
         $phrases = $this->_scrubExcludedPhrases($phrases);
-
         foreach($phrases as $phrase) {
             $locale = $phrase['locale'];
 
@@ -248,6 +268,7 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
             );
 
             $strings[$locale] = $localeStrings; //update "big" array
+
 
             //whether new or just augmented, set registry key again
             Mage::register(self::REGISTRY_KEY, $strings);

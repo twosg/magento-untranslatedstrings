@@ -2,7 +2,7 @@
 <config>
     <modules>
         <EW_UntranslatedStrings>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </EW_UntranslatedStrings>
     </modules>
     <global>
@@ -54,6 +54,15 @@
                     </ew_untranslatedstrings>
                 </observers>
             </controller_front_send_response_after>
+            <ew_untranslatedstrings_string_found>
+                <observers>
+                    <ew_untranslatedstrings_found>
+                    <type>singleton</type>
+                    <class>ew_untranslatedstrings/observer</class>
+                    <method>exportUntranslatedString</method>
+                    </ew_untranslatedstrings_found>
+                </observers>
+            </ew_untranslatedstrings_string_found>
         </events>
     </global>
 
@@ -89,6 +98,9 @@
 ^Eltrino_Region::
                 ]]></untranslated_strings_exclude>
                 <untranslated_strings_batch_locales_enabled>0</untranslated_strings_batch_locales_enabled>
+                <untranslated_strings_create_files>0</untranslated_strings_create_files>
+                <untranslated_strings_merge_files>0</untranslated_strings_merge_files>
+                <untranslated_strings_export_files>0</untranslated_strings_export_files>
             </translate>
         </dev>
     </default>
