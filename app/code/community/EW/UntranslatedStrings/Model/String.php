@@ -28,7 +28,7 @@ class EW_UntranslatedStrings_Model_String extends Mage_Core_Model_Abstract
             $id = $string['id'];
             $text = $string['untranslated_string'];
             $code = $string['translation_code'];
-            $module = $string['translation_module'];
+//            $module = $string['translation_module']; // unused
 
             if($translate->hasTranslation($text,$code)) {
                 $purgeIds[] = $id;

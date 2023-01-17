@@ -9,13 +9,13 @@ class EW_UntranslatedStrings_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function flushUntranslatedStrings(Varien_Event_Observer $observer) {
-        if(!Mage::registry(EW_UntranslatedStrings_Model_Core_Translate::REGISTRY_KEY)) {
+        if (!Mage::registry(EW_UntranslatedStrings_Model_Core_Translate::REGISTRY_KEY)) {
             return; //no strings found
         }
 
         $strings = Mage::registry(EW_UntranslatedStrings_Model_Core_Translate::REGISTRY_KEY);
 
-        if(!is_array($strings)) {
+        if (!is_array($strings)) {
             return; //something went very wrong.
         }
 
@@ -24,10 +24,21 @@ class EW_UntranslatedStrings_Model_Observer
         /* @var $resource EW_UntranslatedStrings_Model_Resource_String */
         $resource = Mage::getResourceModel('ew_untranslatedstrings/string');
 
-        foreach($strings as $localeStrings) {
+        foreach ($strings as $localeStrings) {
             $resource->writeUntranslatedStrings($localeStrings);
         }
 
         Varien_Profiler::stop(EW_UntranslatedStrings_Helper_Data::PROFILER_KEY);
+    }
+
+
+    /**
+     * Create file with untranslated strings in var/export/ directory.
+     * Observes: ew_untranslated_string_found
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function exportUntranslatedString(Varien_Event_Observer $observer) {
+        Mage::getModel('ew_untranslatedstrings/export_singleString')->exportSingleString($observer->getEvent()->getData());
     }
 }
